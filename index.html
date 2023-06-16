@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .jumbotron {
+            text-align: center;
+            background-image: url("img/parking\ 3.jpg");
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 100px 0;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        .form-container {
+            margin-top: 50px;
+            margin-top: 50px;
+        }
+    </style>
+    <title>Parking Lot Reservation</title>
+</head>
+
+<body>
+    <div class="jumbotron"><br><br><br><br><br><br><br><br>
+        <h1 class="display-4">Welcome to our Parking Lot</h1>
+        <a class="btn btn-primary btn-lg" href="#form" role="button">Park Now!</a>
+    </div>
+
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div id="form" class="col-lg-6 ">
+                <h2>Reservation Form</h2>
+                <form id="reservation-form">
+                    <div class="form-group form-group-md">
+                        <label for="fullName">Full Name</label><br>
+                        <input type="text" class="form-control-lg" id="fullName" required>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <label for="licensePlate">License Plate Number</label><br>
+                        <input type="text" class="form-control-lg" id="licensePlate" required>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <label for="phoneNumber">Phone Number</label><br>
+                        <input type="text" class="form-control-lg" id="phoneNumber" required>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <label for="entryTime">Entry Time</label><br>
+                        <input type="time" class="form-control-lg" id="entryTime" required>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <label for="exitTime">Exit Time</label><br>
+                        <input type="time" class="form-control-lg" id="exitTime" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <br><br><br><br><br><br><br><br><br><br>
+
+            </div>
+            <div class="col-6 float-lg-right">
+                <h2>System Log</h2>
+
+                <table id="system-log" class="table">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>License Plate</th>
+                            <th>Phone Number</th>
+                            <th>Entry Time</th>
+                            <th>Exit Time</th>
+                            <th>Total Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("reservation-form");
+            const reservationInfo = document.getElementById("reservation-info");
+            const systemLog = document.getElementById("system-log");
+
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const fullName = document.getElementById("fullName").value;
+                const licensePlate = document.getElementById("licensePlate").value;
+                const phoneNumber = document.getElementById("phoneNumber").value;
+                const entryTime = document.getElementById("entryTime").value;
+                const exitTime = document.getElementById("exitTime").value;
+
+                const entryDate = new Date();
+                const exitDate = new Date();
+                const entryParts = entryTime.split(":");
+                const exitParts = exitTime.split(":");
+                entryDate.setHours(entryParts[0], entryParts[1]);
+                exitDate.setHours(exitParts[0], exitParts[1]);
+
+                const totalTime = Math.abs(exitDate - entryDate) / 3600000;
+
+                const newRow = systemLog.insertRow();
+                const fullNameCell = newRow.insertCell();
+                const licensePlateCell = newRow.insertCell();
+                const phoneNumberCell = newRow.insertCell();
+                const entryTimeCell = newRow.insertCell();
+                const exitTimeCell = newRow.insertCell();
+                const totalTimeCell = newRow.insertCell();
+                const deleteCell = newRow.insertCell();
+
+                fullNameCell.textContent = fullName;
+                licensePlateCell.textContent = licensePlate;
+                phoneNumberCell.textContent = phoneNumber;
+                entryTimeCell.textContent = entryTime;
+                exitTimeCell.textContent = exitTime;
+                totalTimeCell.textContent = totalTime.toFixed(2) + " hours";
+
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.classList.add("btn", "btn-danger", "btn-sm");
+                deleteButton.addEventListener("click", function() {
+                    systemLog.deleteRow(newRow.rowIndex);
+                });
+
+                deleteCell.appendChild(deleteButton);
+
+                form.reset();
+            });
+        });
+    </script>
+</body>
+
+</html>
